@@ -2,31 +2,29 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Campos que se pueden asignar masivamente
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'telefono',
+        'direccion_envio',
+        'direccion_facturacion',
+        'fecha_nacimiento',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Campos ocultos
      */
     protected $hidden = [
         'password',
@@ -34,15 +32,24 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casts
      */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'fecha_nacimiento' => 'date',
         ];
+    }
+
+    /**
+     * RELACIONES
+     */
+
+    // Un usuario puede hacer muchos pedidos
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
     }
 }
