@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Panel administrador
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     // Dashboard admin
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/descuento', [AdminController::class, 'descuento'])
         ->name('admin.descuento');
 });
+
 
 // Rutas de autenticación (Breeze)
 require __DIR__.'/auth.php';

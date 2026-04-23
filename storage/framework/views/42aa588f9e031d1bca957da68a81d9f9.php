@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <?php if(auth()->guard()->check()): ?>
 
                 
-                <?php if(auth()->user()->email === 'admin@admin.com'): ?>
+                <?php if(auth()->user()->role === 'admin'): ?>
                     <a href="<?php echo e(route('admin')); ?>" 
                        class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition">
                         Admin

@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             @auth
 
                 {{-- Mostrar botón Admin SOLO si es el admin --}}
-                @if(auth()->user()->email === 'admin@admin.com')
+                @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin') }}" 
                        class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition">
                         Admin
