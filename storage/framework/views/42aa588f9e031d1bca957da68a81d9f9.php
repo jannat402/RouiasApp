@@ -79,12 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     </a>
                 <?php endif; ?>
 
-                <form action="<?php echo e(route('logout')); ?>" method="POST">
+                <form method="POST" action="<?php echo e(route('logout')); ?>">
                     <?php echo csrf_field(); ?>
-                    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+                    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
                         Cerrar sesión
                     </button>
                 </form>
+
             <?php endif; ?>
 
             <!-- USUARIO INVITADO -->
@@ -101,6 +102,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     <!-- CONTENIDO -->
     <main class="py-10 px-6">
+        
+        <?php if(session('success')): ?>
+            <div class="bg-green-600 text-white p-4 rounded mb-6 text-center shadow">
+                <?php echo e(session('success')); ?>
+
+            </div>
+        <?php endif; ?>
+
+        
+        <?php if(session('error')): ?>
+            <div class="bg-red-600 text-white p-4 rounded mb-6 text-center shadow">
+                <?php echo e(session('error')); ?>
+
+            </div>
+        <?php endif; ?>
+
         <?php echo $__env->yieldContent('content'); ?>
     </main>
 

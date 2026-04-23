@@ -18,27 +18,31 @@ class RegisteredUserController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validación correcta
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'unique:users,email'],
+        'password' => ['required', 'confirmed'],
+        'telefono' => ['required'],
+        'direccion_envio' => ['required'],
+        'direccion_facturacion' => ['required'],
+        'fecha_nacimiento' => ['required', 'date'],
+    ]);
 
-        // Crear usuario (sin password_confirmation)
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'telefono' => $request->telefono,
+        'direccion_envio' => $request->direccion_envio,
+        'direccion_facturacion' => $request->direccion_facturacion,
+        'fecha_nacimiento' => $request->fecha_nacimiento,
+    ]);
 
-        event(new Registered($user));
+    event(new Registered($user));
+    session()->flash('success', 'Usuario creado correctamente!');
+    Auth::login($user);
+    return redirect('/');
+}
 
-        // Iniciar sesión automáticamente
-        Auth::login($user);
-
-        // Redirigir al catálogo (como pide la práctica)
-        return redirect('/catalog');
-    }
 }

@@ -79,12 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     </a>
                 @endif
 
-                <form action="{{ route('logout') }}" method="POST">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+                    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
                         Cerrar sesión
                     </button>
                 </form>
+
             @endauth
 
             <!-- USUARIO INVITADO -->
@@ -101,6 +102,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     <!-- CONTENIDO -->
     <main class="py-10 px-6">
+        {{-- Mensaje de éxito --}}
+        @if(session('success'))
+            <div class="bg-green-600 text-white p-4 rounded mb-6 text-center shadow">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Mensaje de error --}}
+        @if(session('error'))
+            <div class="bg-red-600 text-white p-4 rounded mb-6 text-center shadow">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
