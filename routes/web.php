@@ -22,11 +22,8 @@ Route::get('/producto/{id}', [ProductoController::class, 'detalle'])->name('prod
 
 //carrito
 Route::get('/carrito', [CarritoController::class, 'index'])->name('cart');
-
 Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
-
 Route::post('/carrito/eliminar', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
-
 Route::post('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
 
 // Sincronización con localStorage
@@ -85,6 +82,16 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     Route::delete('/admin/productos/eliminar/{id}', [AdminController::class, 'eliminarProducto'])
         ->name('admin.productos.eliminar');
+
+    // Pedidos (admin)
+    Route::get('/admin/pedidos', [AdminController::class, 'pedidos'])
+        ->name('admin.pedidos');
+
+    Route::get('/admin/pedidos/{id}', [AdminController::class, 'pedidoDetalle'])
+        ->name('admin.pedidos.detalle');
+
+    Route::put('/admin/pedidos/{id}/estado', [AdminController::class, 'actualizarEstado'])
+        ->name('admin.pedidos.estado');
 
     // Descuento global
     Route::post('/admin/descuento', [AdminController::class, 'descuento'])
