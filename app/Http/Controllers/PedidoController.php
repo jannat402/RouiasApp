@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class PedidoController extends Controller
 {
     // Mostrar checkout
-    public function checkout()
+    public function mostrarCheckout()
     {
         return view('checkout');
     }

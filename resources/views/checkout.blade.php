@@ -65,7 +65,7 @@
         <input type="text" name="tarjeta_numero" class="w-full p-2 border rounded mb-3" required>
 
         <label>Fecha de caducidad</label>
-        <input type="month" name="tarjeta_fecha" class="w-full p-2 border rounded mb-3" required>
+        <input type="date" name="tarjeta_fecha" class="w-full p-2 border rounded mb-3" required>
 
         <label>CVV</label>
         <input type="text" name="tarjeta_cvv" class="w-full p-2 border rounded mb-3" required>
@@ -77,6 +77,16 @@
     </button>
 
 </form>
+
+@if ($errors->any())
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <script>
 document.getElementById('misma').addEventListener('change', function() {

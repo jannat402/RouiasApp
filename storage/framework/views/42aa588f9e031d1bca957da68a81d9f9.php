@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <!-- FOOTER -->
     <footer class="bg-orange-600 text-white text-center py-6 mt-10 shadow-inner">
         <p class="text-sm">© 2026 PetShop 🐾 Todos los derechos reservados.</p>
-        <p class="text-xs opacity-80">Comida, juguetes y accesorios para tus mejores amigos</p>
+        <p class="text-xs opacity-80">Comida, juguetes y accesorios para tus mejores amigos caninos</p>
     </footer>
 
 </body>
