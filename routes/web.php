@@ -7,7 +7,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ValoracionController;
 
 
 
@@ -26,6 +26,11 @@ Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('ca
 Route::post('/carrito/eliminar', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
 Route::post('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
 
+// Valoraciones
+Route::post('/valoracion/enviar', [ValoracionController::class, 'store'])
+    ->name('valoracion.store')
+    ->middleware('auth');
+
 // Sincronización con localStorage
 Route::post('/carrito/sincronizar', [CarritoController::class, 'sincronizar'])
     ->name('carrito.sincronizar');
@@ -36,11 +41,22 @@ Route::middleware('auth')->group(function () {
     // Finalizar compra
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
-    // Mis pedidos
-    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos'])->name('pedidos');
+    // Historial de pedidos del cliente
+    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos'])
+        ->middleware('auth')
+        ->name('mis.pedidos');
 
-    // Detalle de pedido
-    Route::get('/pedido/{id}', [PedidoController::class, 'detalle'])->name('pedido.detalle');
+    // Detalle de un pedido del cliente
+    Route::get('/mis-pedidos/{id}', [PedidoController::class, 'detallePedido'])
+        ->middleware('auth')
+        ->name('pedido.detalle');
+
+    // ajax
+    Route::get('/ajax/check-comments', [PedidoController::class, 'checkComments'])
+        ->name('ajax.checkComments');
+
+    Route::post('/ajax/mark-comment', [PedidoController::class, 'markComment'])
+        ->name('ajax.markComment');
 
 });
 
@@ -92,6 +108,20 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     Route::put('/admin/pedidos/{id}/estado', [AdminController::class, 'actualizarEstado'])
         ->name('admin.pedidos.estado');
+    
+    // Usuarios (admin)
+    Route::get('/admin/usuarios', [AdminController::class, 'usuarios'])
+        ->name('admin.usuarios');
+
+    Route::put('/admin/usuarios/{id}/rol', [AdminController::class, 'cambiarRol'])
+        ->name('admin.usuarios.rol');
+
+    Route::delete('/admin/usuarios/{id}', [AdminController::class, 'eliminarUsuario'])
+        ->name('admin.usuarios.eliminar');
+
+    // Grafico
+    Route::get('/admin/grafico', [AdminController::class, 'grafico'])
+    ->name('admin.grafico');
 
     // Descuento global
     Route::post('/admin/descuento', [AdminController::class, 'descuento'])

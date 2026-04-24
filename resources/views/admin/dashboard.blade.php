@@ -25,6 +25,18 @@
             <p class="text-sm mt-2">Gestionar productos</p>
         </a>
 
+        <a href="{{ route('admin.pedidos') }}" 
+           class="bg-yellow-600 text-white p-6 rounded shadow hover:bg-yellow-700 transition">
+            <h2 class="text-xl font-semibold">Pedidos</h2>
+            <p class="text-sm mt-2">Gestionar pedidos</p>
+        </a>
+
+        <a href="{{ route('admin.usuarios') }}" 
+           class="bg-red-600 text-white p-6 rounded shadow hover:bg-red-700 transition">
+            <h2 class="text-xl font-semibold">Usuarios</h2>
+            <p class="text-sm mt-2">Gestionar usuarios</p>
+        </a>
+
     </div>
 </div>
 

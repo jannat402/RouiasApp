@@ -18,6 +18,9 @@
             <a href="{{ route('admin.categorias') }}" class="hover:underline">Categorías</a>
             <a href="{{ route('admin.subcategorias') }}" class="hover:underline">Subcategorías</a>
             <a href="{{ route('admin.productos') }}" class="hover:underline">Productos</a>
+            <a href="{{ route('admin.pedidos') }}" class="hover:underline">Pedidos</a>
+            <a href="{{ route('admin.usuarios') }}" class="hover:underline">Usuarios</a>
+            <a href="{{ route('admin.grafico') }}" class="hover:underline">Gráfico de ventas</a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

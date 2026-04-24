@@ -7,6 +7,9 @@ use App\Models\Categoria;
 use App\Models\Subcategoria;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminController extends Controller
 {
@@ -67,7 +70,7 @@ class AdminController extends Controller
         return view('admin.productos.index', compact('productos'));
     }
 
-    // acciones del admin sobre los productos
+    // ACCIONES SOBRE LOS PRODUCTOS ADMIN
     public function crearProducto()
     {
         $categorias = Categoria::all();
@@ -144,6 +147,7 @@ class AdminController extends Controller
         return back()->with('success', 'Producto eliminado correctamente.');
     }
     
+    // ACCIONES SOBRE LOS PEDIDOS ADMIN
     public function pedidos()
     {
         $pedidos = Pedido::with('usuario')->orderBy('created_at', 'desc')->get();
@@ -167,6 +171,61 @@ class AdminController extends Controller
         $pedido->save();
 
         return back()->with('success', 'Estado actualizado correctamente.');
+    }
+    
+    // ACCIONES SOBRE LOS USUARIOS 
+    public function usuarios()
+    {
+        $usuarios = User::orderBy('created_at', 'desc')->get();
+        return view('admin.usuarios.index', compact('usuarios'));
+    }
+
+    public function cambiarRol(Request $request, $id)
+    {
+        $request->validate([
+            'role' => 'required|in:admin,cliente'
+        ]);
+
+        $usuario = User::findOrFail($id);
+        $usuario->role = $request->role;
+        $usuario->save();
+
+        return back()->with('success', 'Rol actualizado correctamente.');
+    }
+
+    public function eliminarUsuario($id)
+    {
+        $usuario = User::findOrFail($id);
+
+        // Evitar que el admin s'elimini a ell mateix
+        if ($usuario->id === Auth::id()) {
+            return back()->with('error', 'No puedes eliminar tu propia cuenta.');
+        }
+
+        $usuario->delete();
+
+        return back()->with('success', 'Usuario eliminado correctamente.');
+    }
+
+    // GRAFICO
+    public function grafico()
+    {
+        // Obtener ventas totales por producto
+        $ventas = Pedido::join('lineas_pedido', 'pedidos.id', '=', 'lineas_pedido.pedido_id')
+                        ->selectRaw('producto_id, SUM(cantidad) as total')
+                        ->groupBy('producto_id')
+                        ->pluck('total')
+                        ->toArray();
+
+        // Obtener nombres de productos (para la leyenda)
+        $nombres = Pedido::join('lineas_pedido', 'pedidos.id', '=', 'lineas_pedido.pedido_id')
+                        ->join('productos', 'productos.id', '=', 'lineas_pedido.producto_id')
+                        ->selectRaw('productos.nombre')
+                        ->groupBy('productos.nombre')
+                        ->pluck('nombre')
+                        ->toArray();
+
+        return view('admin.grafico', compact('ventas', 'nombres'));
     }
 
     // DESCUENTO GLOBAL

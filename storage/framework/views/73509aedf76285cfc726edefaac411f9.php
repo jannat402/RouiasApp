@@ -18,6 +18,9 @@
             <a href="<?php echo e(route('admin.categorias')); ?>" class="hover:underline">Categorías</a>
             <a href="<?php echo e(route('admin.subcategorias')); ?>" class="hover:underline">Subcategorías</a>
             <a href="<?php echo e(route('admin.productos')); ?>" class="hover:underline">Productos</a>
+            <a href="<?php echo e(route('admin.pedidos')); ?>" class="hover:underline">Pedidos</a>
+            <a href="<?php echo e(route('admin.usuarios')); ?>" class="hover:underline">Usuarios</a>
+            <a href="<?php echo e(route('admin.grafico')); ?>" class="hover:underline">Gráfico de ventas</a>
 
             <form method="POST" action="<?php echo e(route('logout')); ?>">
                 <?php echo csrf_field(); ?>

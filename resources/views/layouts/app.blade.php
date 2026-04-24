@@ -12,6 +12,7 @@
     @vite('resources/css/app.css')
 </head>
 
+<!-- JS -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 

@@ -32,7 +32,8 @@ class CheckoutController extends Controller
                 'pedido_id' => $pedido->id,
                 'producto_id' => $item['id'],
                 'cantidad' => $item['cantidad'],
-                'precio' => $item['precio']
+                'precio' => $item['precio'],
+                'has_to_comment' => true // MARCAR QUE EL USUARIO DEBE COMENTAR
             ]);
 
             // Actualizar stock
