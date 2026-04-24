@@ -79,12 +79,11 @@
     </form>
 
     @auth
-        <form action="{{ route('checkout') }}" method="POST">
-            @csrf
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+        <a href="{{ route('checkout') }}"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
                 Finalizar compra
-            </button>
-        </form>
+        </a>
+
     @else
         <div class="text-red-600 font-semibold flex items-center gap-2">
             Debes iniciar sesión para finalizar la compra.

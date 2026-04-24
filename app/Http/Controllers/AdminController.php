@@ -128,6 +128,7 @@ class AdminController extends Controller
         $request->validate([
             'nombre' => 'required',
             'precio' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'subcategoria_id' => 'required|exists:subcategorias,id',
             'imagen' => 'nullable|image'
@@ -141,6 +142,7 @@ class AdminController extends Controller
         $producto->update([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
+            'stock' => $request -> stock,
             'descripcion' => $request->descripcion,
             'categoria_id' => $request->categoria_id,
             'subcategoria_id' => $request->subcategoria_id,
@@ -294,6 +296,5 @@ class AdminController extends Controller
 
         return view('admin.productos', compact('productos'));
     }
-
 
 }

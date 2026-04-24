@@ -45,7 +45,7 @@
                     </td>
 
                     <td class="p-2 border">
-                        <?php echo e($u->created_at->format('d/m/Y H:i')); ?>
+                        <?php echo e($u->created_at ? $u->created_at->format('d/m/Y H:i') : '—'); ?>
 
                     </td>
 

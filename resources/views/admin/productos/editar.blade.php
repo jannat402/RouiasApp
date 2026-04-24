@@ -15,21 +15,35 @@
     </div>
 @endif
 
-<form action="{{ route('admin.productos.actualizar', $producto->id) }}" method="POST" enctype="multipart/form-data"
+<form action="{{ route('admin.productos.actualizar', $producto->id) }}" 
+      method="POST" enctype="multipart/form-data"
       class="bg-white p-6 rounded shadow grid grid-cols-1 md:grid-cols-2 gap-4">
+
     @csrf
     @method('PUT')
 
+    {{-- Nombre --}}
     <div>
         <label class="font-semibold">Nombre</label>
-        <input type="text" name="nombre" value="{{ $producto->nombre }}" class="w-full p-2 border rounded" required>
+        <input type="text" name="nombre" value="{{ $producto->nombre }}" 
+               class="w-full p-2 border rounded" required>
     </div>
 
+    {{-- Precio --}}
     <div>
-        <label class="font-semibold">Precio</label>
-        <input type="number" step="0.01" name="precio" value="{{ $producto->precio }}" class="w-full p-2 border rounded" required>
+        <label class="font-semibold">Precio (€)</label>
+        <input type="number" step="0.01" name="precio" value="{{ $producto->precio }}" 
+               class="w-full p-2 border rounded" required>
     </div>
 
+    {{-- Stock --}}
+    <div>
+        <label class="font-semibold">Stock</label>
+        <input type="number" name="stock" value="{{ $producto->stock }}" 
+               class="w-full p-2 border rounded" required>
+    </div>
+
+    {{-- Categoría --}}
     <div>
         <label class="font-semibold">Categoría</label>
         <select name="categoria_id" class="w-full p-2 border rounded" required>
@@ -41,6 +55,7 @@
         </select>
     </div>
 
+    {{-- Subcategoría --}}
     <div>
         <label class="font-semibold">Subcategoría</label>
         <select name="subcategoria_id" class="w-full p-2 border rounded" required>
@@ -52,15 +67,21 @@
         </select>
     </div>
 
+    {{-- Descripción --}}
     <div class="col-span-2">
         <label class="font-semibold">Descripción</label>
-        <textarea name="descripcion" class="w-full p-2 border rounded" rows="4">{{ $producto->descripcion }}</textarea>
+        <textarea name="descripcion" class="w-full p-2 border rounded" rows="4">
+            {{ $producto->descripcion }}
+        </textarea>
     </div>
 
+    {{-- Imagen --}}
     <div class="col-span-2">
         <label class="font-semibold">Imagen actual</label><br>
+
         @if($producto->imagen)
-            <img src="{{ asset('storage/' . $producto->imagen) }}" class="w-32 h-32 object-cover mb-2">
+            <img src="{{ asset('storage/' . $producto->imagen) }}" 
+                 class="w-32 h-32 object-cover mb-2">
         @endif
 
         <input type="file" name="imagen" class="w-full p-2 border rounded">

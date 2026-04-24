@@ -81,12 +81,11 @@
     </form>
 
     <?php if(auth()->guard()->check()): ?>
-        <form action="<?php echo e(route('checkout')); ?>" method="POST">
-            <?php echo csrf_field(); ?>
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+        <a href="<?php echo e(route('checkout')); ?>"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
                 Finalizar compra
-            </button>
-        </form>
+        </a>
+
     <?php else: ?>
         <div class="text-red-600 font-semibold flex items-center gap-2">
             Debes iniciar sesión para finalizar la compra.

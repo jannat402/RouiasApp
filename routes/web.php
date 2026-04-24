@@ -38,9 +38,10 @@ Route::post('/carrito/sincronizar', [CarritoController::class, 'sincronizar'])
 
 // Checkout y pedidos (solo usuarios logueados)
 Route::middleware('auth')->group(function () {
-
+    // Mostrar formulario
+    Route::get('/checkout', [PedidoController::class, 'checkout'])->name('checkout');
     // Finalizar compra
-    Route::post('/checkout', [PedidoController::class, 'realizarCompra'])->name('checkout');
+    Route::post('/checkout', [PedidoController::class, 'realizarCompra'])->name('checkout.procesar');
 
     // Historial de pedidos del cliente
     Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos'])

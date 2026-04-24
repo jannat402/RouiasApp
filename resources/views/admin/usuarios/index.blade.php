@@ -42,7 +42,7 @@
                     </td>
 
                     <td class="p-2 border">
-                        {{ $u->created_at->format('d/m/Y H:i') }}
+                        {{ $u->created_at ? $u->created_at->format('d/m/Y H:i') : '—' }}
                     </td>
 
                     <td class="p-2 border flex gap-2">
