@@ -11,6 +11,9 @@ class UserController extends Controller
     public function perfil()
     {
         $usuario = Auth::user();
+        if (!$usuario) {
+            return redirect('/login');
+        }
         return view('perfil', compact('usuario'));
     }
 
@@ -23,12 +26,18 @@ class UserController extends Controller
         ]);
 
         $usuario = Auth::user();
-
+        if (!$usuario) {
+            return redirect('/login');
+        }
         $usuario->name = $request->name;
         $usuario->telefono = $request->telefono;
         $usuario->direccion_envio = $request->direccion_envio;
-        $usuario->save();
 
-        return back()->with('success', 'Perfil actualizado correctamente.');
+        try {
+            $usuario->save();
+            return back()->with('success', 'Perfil actualizado correctamente.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al actualizar el perfil: ' . $e->getMessage()]);
+        }
     }
 }

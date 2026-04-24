@@ -30,7 +30,7 @@
 
         <!-- Dirección -->
         <label class="block font-semibold text-gray-700">Dirección</label>
-        <input type="text" name="direccion" value="<?php echo e(old('direccion', $usuario->direccion)); ?>"
+        <input type="text" name="direccion_envio" value="<?php echo e(old('direccion_envio', $usuario->direccion_envio)); ?>"
                class="w-full p-2 border border-orange-300 rounded mb-4">
 
         <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">

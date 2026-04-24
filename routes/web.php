@@ -56,11 +56,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/ajax/check-comments', [PedidoController::class, 'checkComments'])
         ->name('ajax.checkComments');
 
-    // perfil
     Route::post('/ajax/mark-comment', [PedidoController::class, 'markComment'])
         ->name('ajax.markComment');
 
-         Route::get('/perfil', [UserController::class, 'perfil'])
+    // perfil
+    Route::get('/perfil', [UserController::class, 'perfil'])
         ->name('perfil');
 
     Route::post('/perfil/actualizar', [UserController::class, 'actualizarPerfil'])
