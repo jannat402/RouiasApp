@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Valoracion extends Model
 {
+    protected $table = 'valoraciones';
+
     protected $fillable = [
         'producto_id',
         'user_id',
@@ -15,7 +17,7 @@ class Valoracion extends Model
 
     public function producto()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->belongsTo(Producto::class, 'producto_id');
     }
 
     public function usuario()

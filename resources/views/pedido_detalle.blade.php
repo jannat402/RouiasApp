@@ -26,13 +26,13 @@
         </thead>
 
         <tbody>
-            @foreach($pedido->items as $item)
+            @foreach($pedido->lineas as $lineas)
                 <tr class="border-b">
-                    <td class="p-2 border">{{ $item->producto->nombre }}</td>
-                    <td class="p-2 border">{{ $item->cantidad }}</td>
-                    <td class="p-2 border">{{ number_format($item->precio, 2) }} €</td>
+                    <td class="p-2 border">{{ $lineas->producto->nombre }}</td>
+                    <td class="p-2 border">{{ $lineas->cantidad }}</td>
+                    <td class="p-2 border">{{ number_format($lineas->precio, 2) }} €</td>
                     <td class="p-2 border">
-                        {{ number_format($item->cantidad * $item->precio, 2) }} €
+                        {{ number_format($lineas->cantidad * $lineas->precio, 2) }} €
                     </td>
                 </tr>
             @endforeach

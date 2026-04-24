@@ -156,7 +156,7 @@ class AdminController extends Controller
 
     public function pedidoDetalle($id)
     {
-        $pedido = Pedido::with('usuario', 'items.producto')->findOrFail($id);
+        $pedido = Pedido::with('usuario', 'lineas.producto')->findOrFail($id);
         return view('admin.pedidos.detalle', compact('pedido'));
     }
 
@@ -229,17 +229,29 @@ class AdminController extends Controller
     }
 
     // DESCUENTO GLOBAL
-    public function descuento(Request $request)
+    public function aplicarDescuento(Request $request)
     {
         $request->validate([
             'descuento' => 'required|numeric|min:1|max:90'
         ]);
 
-        foreach (Producto::all() as $p) {
-            $p->precio = $p->precio * (1 - $request->descuento / 100);
-            $p->save();
-        }
+        $porcentaje = $request->descuento;
 
-        return back()->with('success', 'Descuento aplicado correctamente.');
+        // Aplicar descuento a todos los productos
+        Producto::all()->each(function ($p) use ($porcentaje) {
+            $nuevoPrecio = $p->precio - ($p->precio * ($porcentaje / 100));
+
+            // Evitar precios negativos o absurdos
+            if ($nuevoPrecio < 0) {
+                $nuevoPrecio = 0;
+            }
+
+            // Redondear a 2 decimales
+            $p->precio = round($nuevoPrecio, 2);
+            $p->save();
+        });
+
+        return back()->with('success', "Descuento del $porcentaje% aplicado correctamente.");
     }
+
 }

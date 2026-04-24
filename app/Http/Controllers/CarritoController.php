@@ -10,7 +10,7 @@ class CarritoController extends Controller
     public function index()
     {
         $carrito = session('carrito', []);
-        return view('cart', compact('carrito'));
+        return view('layouts.cart', compact('carrito'));
     }
 
     public function agregar(Request $request)

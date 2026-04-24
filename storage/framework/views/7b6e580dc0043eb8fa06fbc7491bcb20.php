@@ -10,6 +10,7 @@
     <ul id="lista-elementos"></ul>
 </div>
 
+<!-- JS -->
 <script>
     // Datos enviados desde Laravel
     const dades = <?php echo json_encode($ventas, 15, 512) ?>;
@@ -105,6 +106,7 @@
 
         // funcion para crear la lista
         generarLista() {
+            const lista = document.getElementById("lista-elementos"); 
             // para escribir en el html
             lista.innerHTML = "";
             // for para crear la leyenda con el color que corresponde a cada barra
@@ -117,8 +119,10 @@
                 // creo la etiqueta li dentro de lista-elementos
                 const li = document.createElement("li");
                 li.style.borderLeft = `15px solid ${color}`;
-                // para tener un espacio esntre el texto y el color
-                li.innerHTML = `<span style="margin-left:8px;">${nombres[i]}: ${valor} ventas</span>`;            // utlizo el appendChild para que el colo y el texto de Valor salga dentro 
+                // para tener un espacio entre el texto y texto
+                li.style.marginBottom = "10px";
+                // para tener un espacio entre el texto y el color
+                li.innerHTML = `<span style="margin-left:8px;">${nombres[i]} (${valor})</span>`;            // utlizo el appendChild para que el colo y el texto de Valor salga dentro 
                 // del contenedor lista-elementos
                 lista.appendChild(li);
             }

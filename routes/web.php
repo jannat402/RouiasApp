@@ -124,7 +124,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     ->name('admin.grafico');
 
     // Descuento global
-    Route::post('/admin/descuento', [AdminController::class, 'descuento'])
+    Route::post('/admin/descuento', [AdminController::class, 'aplicarDescuento'])
         ->name('admin.descuento');
 });
 
