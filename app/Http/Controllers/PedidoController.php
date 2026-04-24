@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedido;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -65,5 +66,47 @@ class PedidoController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function realizarCompra()
+    {
+        $carrito = session('carrito', []);
+
+        if (empty($carrito)) {
+            return back()->with('error', 'El carrito está vacío');
+        }
+
+        // Crear pedido
+        $pedido = Pedido::create([
+            'user_id' => Auth::id(),
+            'total' => collect($carrito)->sum(fn($item) => $item['precio'] * $item['cantidad'])
+        ]);
+
+        // Crear líneas de pedido + decrementar stock
+        foreach ($carrito as $item) {
+
+            // Crear línea
+            DB::table('lineas_pedido')->insert([
+                'pedido_id' => $pedido->id,
+                'producto_id' => $item['id'],
+                'cantidad' => $item['cantidad'],
+                'precio' => $item['precio'],
+                'has_to_comment' => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            // Decrementar stock
+            $producto = Producto::find($item['id']);
+            $producto->stock -= $item['cantidad'];
+            $producto->save();
+        }
+
+        // Vaciar carrito
+        session()->forget('carrito');
+
+        return redirect()->route('mis.pedidos')
+                        ->with('success', 'Compra realizada correctamente');
+    }
+
 
 }

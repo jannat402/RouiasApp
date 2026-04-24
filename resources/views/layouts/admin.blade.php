@@ -50,6 +50,14 @@
                 </form>
             </div>
 
+            <form action="{{ route('admin.descuento.quitar') }}" method="POST">
+                @csrf
+                <button class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition text-sm font-semibold shadow">
+                    Quitar descuento
+                </button>
+            </form>
+
+
             <!-- LOGOUT -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

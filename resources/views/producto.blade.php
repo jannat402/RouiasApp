@@ -9,8 +9,8 @@
     <div class="flex flex-col md:flex-row gap-6">
 
         <!-- IMAGEN -->
-        <img src="{{ $producto->imagen }}" 
-             class="w-full md:w-1/2 rounded-lg shadow-md border border-orange-100">
+        <img src="{{ $producto->imagen }}"
+            class="w-full md:w-1/2 h-80 object-contain bg-white rounded-lg shadow-md border border-orange-100 p-4">
 
         <!-- INFO -->
         <div class="flex-1">
@@ -34,13 +34,20 @@
             </p>
 
             <!-- BOTÓN AÑADIR AL CARRITO -->
-            <form action="{{ route('carrito.agregar') }}" method="POST" class="mt-5">
-                @csrf
-                <input type="hidden" name="id" value="{{ $producto->id }}">
-                <button class="bg-orange-500 text-white px-5 py-2 rounded-lg shadow hover:bg-orange-600 transition flex items-center gap-2">
-                    🛒 Añadir al carrito
-                </button>
-            </form>
+            @if($producto->stock > 0)
+                <form action="{{ route('carrito.agregar') }}" method="POST" class="mt-5">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $producto->id }}">
+                    <button class="bg-orange-500 text-white px-5 py-2 rounded-lg shadow hover:bg-orange-600 transition flex items-center gap-2">
+                        🛒 Añadir al carrito
+                    </button>
+                </form>
+            @else
+                <p class="mt-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow text-center">
+                    Producto temporalmente agotado
+                </p>
+            @endif
+
         </div>
 
     </div>
@@ -56,10 +63,12 @@
         <div class="border border-orange-200 p-4 rounded-lg mb-4 bg-white shadow-sm">
 
             <div class="flex justify-between items-center mb-1">
-                <p class="font-semibold text-gray-800">{{ $v->user->name }}</p>
+            </div>
+            <!-- muestro el nombre del cliente y el dia en el que se hace el comentario-->
+                <p class="font-semibold text-gray-800">{{ $v->usuario->name }}</p>
                 <p class="text-sm text-gray-500">{{ $v->created_at->format('d/m/Y') }}</p>
             </div>
-
+            <!-- muestro el numero de estrellas -->
             <div class="flex items-center mb-2">
                 <span class="text-yellow-500 text-lg font-bold">
                     {{ str_repeat('★', $v->estrellas) }}
@@ -68,13 +77,14 @@
                     {{ $v->estrellas }}/5
                 </span>
             </div>
-
+            <!-- muestro el comentario-->
             <p class="text-gray-700 leading-relaxed">
                 {{ $v->comentario }}
             </p>
 
         </div>
     @empty
+        <!-- Si no hay comentario se muestra este mensaje-->
         <p class="text-gray-500 italic">Este producto aún no tiene valoraciones.</p>
     @endforelse
 
@@ -89,10 +99,10 @@
             <h3 class="text-xl font-bold mb-4 text-orange-700">
                 Deja tu valoración
             </h3>
-
+            <!-- el formulario de valoraciones-->
             <form action="{{ route('valoracion.store') }}" method="POST">
                 @csrf
-
+                <!-- obtengo el id del producto y el id de la linia de pedido -->
                 <input type="hidden" name="producto_id" value="{{ $producto->id }}">
                 <input type="hidden" name="linea_id" id="linea_id_valoracion">
 
@@ -103,7 +113,7 @@
                             <input type="radio" 
                                 name="estrellas" 
                                 value="{{ $i }}" 
-                                class="peer sr-only" 
+                                class="hidden peer" 
                                 required>
                             <span class="text-gray-400 peer-checked:text-yellow-500 transition">
                                 ★

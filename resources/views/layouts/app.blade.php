@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
     <header class="bg-white shadow-md px-6 py-4 flex justify-between items-center border-b-4 border-orange-300">
 
         <!-- LOGO -->
-        <h1 class="text-4xl font-extrabold text-orange-600 flex items-center gap-2">
+        <a href="{{ route('home') }}" class="text-4xl font-extrabold text-orange-600 flex items-center gap-2 transition">
             🐶 PetShop
-        </h1>
+        </a>
 
         <!-- BUSCADOR -->
         <form action="{{ route('buscar') }}" method="GET" class="w-1/2">
@@ -74,6 +74,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         Admin
                     </a>
                 @endif
+                
+                <!-- PERFIL -->
+                @auth
+                    <a href="{{ route('perfil') }}" class="text-orange-700 font-semibold">
+                        Mi perfil
+                    </a>
+                @endauth
+
+                @if(auth()->user()->role === 'cliente' || auth()->user()->role === null)
+                    <a href="{{ route('mis.pedidos') }}" 
+                    class="bg-orange-400 text-white px-4 py-2 rounded-lg hover:bg-orange-500 transition shadow flex items-center gap-2">
+                        Mis pedidos
+                    </a>
+                @endif
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -100,13 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
     <main class="py-10 px-6">
 
         @if(session('success'))
-            <div class="bg-green-500 text-white p-4 rounded mb-6 text-center shadow-lg">
+            <div class="bg-green-300 text-white p-4 rounded mb-6 text-center shadow-lg">
                 {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div class="bg-red-500 text-white p-4 rounded mb-6 text-center shadow-lg">
+            <div class="bg-red-300 text-white p-4 rounded mb-6 text-center shadow-lg">
                 {{ session('error') }}
             </div>
         @endif

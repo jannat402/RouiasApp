@@ -13,7 +13,7 @@ class ValoracionController extends Controller
     {
         $request->validate([
             'producto_id' => 'required|integer',
-            'linea_id' => 'required|integer',
+            'linea_id' => 'nullable|integer',
             'estrellas' => 'required|integer|min:1|max:5',
             'comentario' => 'required|string|max:200'
         ]);
@@ -31,8 +31,6 @@ class ValoracionController extends Controller
             ->where('id', $request->linea_id)
             ->update(['has_to_comment' => false]);
 
-        return redirect()
-            ->route('producto.detalle', $request->producto_id)
-            ->with('success', '¡Gracias por tu valoración!');
+        return back()->with('success', '¡Gracias por tu valoración!');
     }
 }

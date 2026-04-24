@@ -8,6 +8,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ValoracionController;
+use App\Http\Controllers\UserController;
 
 
 
@@ -39,7 +40,7 @@ Route::post('/carrito/sincronizar', [CarritoController::class, 'sincronizar'])
 Route::middleware('auth')->group(function () {
 
     // Finalizar compra
-    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [PedidoController::class, 'realizarCompra'])->name('checkout');
 
     // Historial de pedidos del cliente
     Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos'])
@@ -51,13 +52,19 @@ Route::middleware('auth')->group(function () {
         ->middleware('auth')
         ->name('pedido.detalle');
 
-    // ajax
+    // valoracion
     Route::get('/ajax/check-comments', [PedidoController::class, 'checkComments'])
         ->name('ajax.checkComments');
 
+    // perfil
     Route::post('/ajax/mark-comment', [PedidoController::class, 'markComment'])
         ->name('ajax.markComment');
 
+         Route::get('/perfil', [UserController::class, 'perfil'])
+        ->name('perfil');
+
+    Route::post('/perfil/actualizar', [UserController::class, 'actualizarPerfil'])
+        ->name('perfil.actualizar');
 });
 
 // Panel administrador
@@ -123,9 +130,13 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin/grafico', [AdminController::class, 'grafico'])
     ->name('admin.grafico');
 
-    // Descuento global
+    // Descuento
     Route::post('/admin/descuento', [AdminController::class, 'aplicarDescuento'])
         ->name('admin.descuento');
+    
+    Route::post('/admin/descuento/quitar', [AdminController::class, 'quitarDescuento'])
+        ->name('admin.descuento.quitar');
+
 });
 
 

@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
     <header class="bg-white shadow-md px-6 py-4 flex justify-between items-center border-b-4 border-orange-300">
 
         <!-- LOGO -->
-        <h1 class="text-4xl font-extrabold text-orange-600 flex items-center gap-2">
+        <a href="<?php echo e(route('home')); ?>" class="text-4xl font-extrabold text-orange-600 flex items-center gap-2 transition">
             🐶 PetShop
-        </h1>
+        </a>
 
         <!-- BUSCADOR -->
         <form action="<?php echo e(route('buscar')); ?>" method="GET" class="w-1/2">
@@ -74,6 +74,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         Admin
                     </a>
                 <?php endif; ?>
+                
+                <!-- PERFIL -->
+                <?php if(auth()->guard()->check()): ?>
+                    <a href="<?php echo e(route('perfil')); ?>" class="text-orange-700 font-semibold">
+                        Mi perfil
+                    </a>
+                <?php endif; ?>
+
+                <?php if(auth()->user()->role === 'cliente' || auth()->user()->role === null): ?>
+                    <a href="<?php echo e(route('mis.pedidos')); ?>" 
+                    class="bg-orange-400 text-white px-4 py-2 rounded-lg hover:bg-orange-500 transition shadow flex items-center gap-2">
+                        Mis pedidos
+                    </a>
+                <?php endif; ?>
 
                 <form method="POST" action="<?php echo e(route('logout')); ?>">
                     <?php echo csrf_field(); ?>
@@ -100,14 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
     <main class="py-10 px-6">
 
         <?php if(session('success')): ?>
-            <div class="bg-green-500 text-white p-4 rounded mb-6 text-center shadow-lg">
+            <div class="bg-green-300 text-white p-4 rounded mb-6 text-center shadow-lg">
                 <?php echo e(session('success')); ?>
 
             </div>
         <?php endif; ?>
 
         <?php if(session('error')): ?>
-            <div class="bg-red-500 text-white p-4 rounded mb-6 text-center shadow-lg">
+            <div class="bg-red-300 text-white p-4 rounded mb-6 text-center shadow-lg">
                 <?php echo e(session('error')); ?>
 
             </div>

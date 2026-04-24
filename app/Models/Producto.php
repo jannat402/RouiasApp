@@ -29,7 +29,7 @@ class Producto extends Model
 
     public function lineasPedido()
     {
-        return $this->hasMany(LineaPedido::class);
+        return $this->hasMany(LineaPedido::class, 'producto_id');
     }
 
     public function valoraciones()
@@ -37,5 +37,8 @@ class Producto extends Model
         return $this->hasMany(Valoracion::class, 'producto_id');
     }
 
-    
+    public function getVendidosAttribute()
+    {
+        return $this->lineasPedido()->sum('cantidad');
+    }
 }

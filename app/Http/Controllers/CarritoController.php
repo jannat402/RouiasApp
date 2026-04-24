@@ -32,7 +32,8 @@ class CarritoController extends Controller
 
         session(['carrito' => $carrito]);
 
-        return back();
+        return back()->with('success', 'Producto añadido al carrito');
+
     }
 
     public function eliminar(Request $request)
@@ -41,7 +42,7 @@ class CarritoController extends Controller
         unset($carrito[$request->id]);
         session(['carrito' => $carrito]);
 
-        return back();
+        return back()->with('success', 'Producto eliminado del carrito');
     }
 
     public function vaciar()

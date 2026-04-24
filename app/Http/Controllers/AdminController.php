@@ -64,11 +64,21 @@ class AdminController extends Controller
     }
 
     // LISTADO DE PRODUCTOS
-    public function productos()
+    public function productos(Request $request)
     {
-        $productos = Producto::with('categoria', 'subcategoria')->get();
+        $orden = $request->get('orden');
+
+        if ($orden === 'asc') {
+            $productos = Producto::orderBy('stock', 'asc')->get();
+        } elseif ($orden === 'desc') {
+            $productos = Producto::orderBy('stock', 'desc')->get();
+        } else {
+            $productos = Producto::with('categoria', 'subcategoria')->get();
+        }
+
         return view('admin.productos.index', compact('productos'));
     }
+
 
     // ACCIONES SOBRE LOS PRODUCTOS ADMIN
     public function crearProducto()
@@ -234,24 +244,56 @@ class AdminController extends Controller
         $request->validate([
             'descuento' => 'required|numeric|min:1|max:90'
         ]);
-
         $porcentaje = $request->descuento;
-
-        // Aplicar descuento a todos los productos
         Producto::all()->each(function ($p) use ($porcentaje) {
-            $nuevoPrecio = $p->precio - ($p->precio * ($porcentaje / 100));
+            // Guardar precio original solo si aún no está guardado
+            if ($p->precio_original === null) {
+                $p->precio_original = $p->precio;
+            }
 
-            // Evitar precios negativos o absurdos
+            // Aplicar descuento
+            $nuevoPrecio = $p->precio_original - ($p->precio_original * ($porcentaje / 100));
+
             if ($nuevoPrecio < 0) {
                 $nuevoPrecio = 0;
             }
 
-            // Redondear a 2 decimales
             $p->precio = round($nuevoPrecio, 2);
             $p->save();
         });
 
         return back()->with('success', "Descuento del $porcentaje% aplicado correctamente.");
     }
+
+    public function quitarDescuento()
+    {
+        Producto::all()->each(function ($p) {
+            if ($p->precio_original !== null) {
+                $p->precio = $p->precio_original;
+                $p->precio_original = null;
+                $p->save();
+            }
+        });
+
+        return back()->with('success', 'Descuento eliminado y precios restaurados.');
+    }
+
+
+    // funcion para el orden de la tabla de productos
+    public function ordenar(Request $request)
+    {
+        $orden = $request->get('orden');
+
+        if ($orden === 'asc') {
+            $productos = Producto::orderBy('stock', 'asc')->get();
+        } elseif ($orden === 'desc') {
+            $productos = Producto::orderBy('stock', 'desc')->get();
+        } else {
+            $productos = Producto::all();
+        }
+
+        return view('admin.productos', compact('productos'));
+    }
+
 
 }

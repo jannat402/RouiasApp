@@ -5,18 +5,22 @@
 <h1 class="text-3xl font-bold mb-6">Productos</h1>
 
 
-<?php if(session('success')): ?>
-    <div class="bg-green-500 text-white p-3 rounded mb-4">
-        <?php echo e(session('success')); ?>
-
-    </div>
-<?php endif; ?>
-
-
 <a href="<?php echo e(route('admin.productos.crear')); ?>"
    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4 inline-block">
     Crear producto
 </a>
+<!-- Orden de la tabla segun el stock -->
+<div class="flex gap-3 mb-4">
+    <a href="<?php echo e(route('admin.productos', ['orden' => 'asc'])); ?>"
+        class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">
+        Stock ↑
+    </a>
+    <a href="<?php echo e(route('admin.productos', ['orden' => 'desc'])); ?>"
+        class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">
+        Stock ↓
+    </a>
+
+</div>
 
 
 <div class="bg-white p-6 rounded shadow">
@@ -30,7 +34,9 @@
                 <th class="p-2 border">Precio</th>
                 <th class="p-2 border">Categoría</th>
                 <th class="p-2 border">Subcategoría</th>
+                <th class="p-2 border">Stock</th>
                 <th class="p-2 border">Acciones</th>
+
             </tr>
         </thead>
 
@@ -42,6 +48,23 @@
                     <td class="p-2 border"><?php echo e(number_format($p->precio, 2)); ?> €</td>
                     <td class="p-2 border"><?php echo e($p->categoria->nombre); ?></td>
                     <td class="p-2 border"><?php echo e($p->subcategoria->nombre); ?></td>
+                    <td class="p-2 border">
+                            <?php echo e($p->stock); ?>
+
+                            <?php if($p->stock == 0): ?>
+                                <span class="bg-red-500 text-white px-2 py-1 rounded text-xs ml-2">
+                                    Agotado
+                                </span>
+                            <?php elseif($p->stock < 5): ?>
+                                <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs ml-2">
+                                    Bajo stock
+                                </span>
+                            <?php else: ?>
+                                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs ml-2">
+                                    Disponible
+                                </span>
+                            <?php endif; ?>
+                        </td>
 
                     <td class="p-2 border flex gap-2">
 
