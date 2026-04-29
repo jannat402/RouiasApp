@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
+    public function index()
+    {
+        $productos = Producto::all();
+        return view('productos.index', compact('productos'));
+    }
+
     public function detalle($id)
     {
         $producto = Producto::with('valoraciones')->findOrFail($id);
         return view('producto', compact('producto'));
     }
-    
+
     public function ajaxDetalle($id)
     {
         $producto = Producto::with('categoria', 'subcategoria')->findOrFail($id);

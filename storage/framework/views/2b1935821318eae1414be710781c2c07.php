@@ -155,9 +155,9 @@
             </form>
         </div>
     <?php endif; ?>
-
 </div>
 
+<?php echo $__env->make('components.modal-producto', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Jannat\Documents\proyecto\RouiasApp\resources\views/producto.blade.php ENDPATH**/ ?>

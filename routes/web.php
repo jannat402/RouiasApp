@@ -19,6 +19,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Buscador
 Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
 
+//Mostrar productos
+Route::get('/producto', [ProductoController::class, 'index'])->name('productos');
+
 // Detalle de producto
 Route::get('/producto/{id}', [ProductoController::class, 'detalle'])->name('producto.detalle');
 
@@ -41,6 +44,7 @@ Route::post('/valoracion/enviar', [ValoracionController::class, 'store'])
     ->middleware('auth');
 
 // Sincronización con localStorage
+Route::get('/carrito', [CarritoController::class, 'index'])->name('cart');
 Route::post('/carrito/sincronizar', [CarritoController::class, 'sincronizar'])
     ->name('carrito.sincronizar');
 

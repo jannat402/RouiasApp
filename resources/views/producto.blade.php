@@ -149,7 +149,7 @@
             </form>
         </div>
     @endif
-
 </div>
 
+@include('components.modal-producto')
 @endsection
