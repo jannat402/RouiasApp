@@ -10,7 +10,12 @@ class CarritoController extends Controller
     public function index()
     {
         $carrito = session('carrito', []);
-        return view('layouts.cart', compact('carrito'));
+        // Calcular total
+        $total = 0;
+        foreach ($carrito as $item) {
+            $total += $item['precio'] * $item['cantidad'];
+        }
+        return view('cart', compact('carrito','total'));
     }
 
     public function agregar(Request $request)

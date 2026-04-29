@@ -3,38 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $__env->yieldContent('title', 'PetShop'); ?></title>
-
+    <?php echo $__env->make('components.modal-producto', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     
-    <script src="<?php echo e(asset('js/carrito.js')); ?>"></script>
-    <script src="<?php echo e(asset('js/register.js')); ?>"></script>
-
-    
-    <?php echo app('Illuminate\Foundation\Vite')('resources/css/app.css'); ?>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    <script>
+        window.isLoggedIn = <?php echo e(auth()->check() ? 'true' : 'false'); ?>;
+        window.syncCarritoUrl = "<?php echo e(route('carrito.sincronizar')); ?>";
+        window.csrfToken = "<?php echo e(csrf_token()); ?>";
+    </script>
 </head>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    <?php if(auth()->guard()->check()): ?>
-        let carrito = localStorage.getItem('carrito');
-        if (carrito) {
-            fetch("<?php echo e(route('carrito.sincronizar')); ?>", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>"
-                },
-                body: carrito
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    localStorage.removeItem('carrito');
-                }
-            });
-        }
-    <?php endif; ?>
-});
-</script>
 
 <body class="bg-orange-50">
 

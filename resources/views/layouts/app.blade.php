@@ -3,38 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'PetShop')</title>
-
-    {{-- Scripts del proyecto --}}
-    <script src="{{ asset('js/carrito.js') }}"></script>
-    <script src="{{ asset('js/register.js') }}"></script>
-
-    {{-- Tailwind + Vite --}}
-    @vite('resources/css/app.css')
+    @include('components.modal-producto')
+    {{-- Tailwind + Vite + JS--}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+        window.syncCarritoUrl = "{{ route('carrito.sincronizar') }}";
+        window.csrfToken = "{{ csrf_token() }}";
+    </script>
 </head>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    @auth
-        let carrito = localStorage.getItem('carrito');
-        if (carrito) {
-            fetch("{{ route('carrito.sincronizar') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: carrito
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    localStorage.removeItem('carrito');
-                }
-            });
-        }
-    @endauth
-});
-</script>
 
 <body class="bg-orange-50">
 

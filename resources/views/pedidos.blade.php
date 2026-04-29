@@ -1,4 +1,6 @@
-@extends('layouts.cart')
+@extends('layouts.app')
+
+@section('title', 'Mis pedidos')
 
 @section('content')
 

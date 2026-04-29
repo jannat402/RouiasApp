@@ -9,6 +9,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ConsultaController;
 
 
 
@@ -21,11 +22,18 @@ Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
 // Detalle de producto
 Route::get('/producto/{id}', [ProductoController::class, 'detalle'])->name('producto.detalle');
 
+// AJAX: obtener detalle sin recargar
+Route::get('/producto/{id}/ajax', [ProductoController::class, 'ajaxDetalle'])
+    ->name('producto.ajax');
 //carrito
 Route::get('/carrito', [CarritoController::class, 'index'])->name('cart');
 Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
 Route::post('/carrito/eliminar', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
 Route::post('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
+
+// conusltar producto
+Route::get('/consulta', [ConsultaController::class, 'mostrar'])->name('consulta.mostrar');
+Route::post('/consulta', [ConsultaController::class, 'enviar'])->name('consulta.enviar');
 
 // Valoraciones
 Route::post('/valoracion/enviar', [ValoracionController::class, 'store'])

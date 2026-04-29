@@ -1,4 +1,4 @@
-@extends('layouts.cart')
+@extends('cart')
 
 @section('content')
 

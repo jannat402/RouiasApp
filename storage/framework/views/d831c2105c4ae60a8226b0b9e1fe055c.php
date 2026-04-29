@@ -1,5 +1,7 @@
 
 
+<?php $__env->startSection('title', 'Mis pedidos'); ?>
+
 <?php $__env->startSection('content'); ?>
 
 <h1 class="text-3xl font-bold mb-6">Mis pedidos</h1>
@@ -55,4 +57,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.cart', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Jannat\Documents\proyecto\RouiasApp\resources\views/pedidos.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Jannat\Documents\proyecto\RouiasApp\resources\views/pedidos.blade.php ENDPATH**/ ?>

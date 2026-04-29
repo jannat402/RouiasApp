@@ -1,94 +1,95 @@
 
 
+<?php $__env->startSection('title', 'Carrito'); ?>
+
 <?php $__env->startSection('content'); ?>
 
-<h1 class="text-3xl font-bold mb-6 text-gray-800">🛒 Tu carrito</h1>
+<?php
+    $carrito = $carrito ?? [];
+    $total = $total ?? 0;
+?>
 
-<?php if(empty($carrito)): ?>
-    <div class="bg-yellow-100 text-yellow-800 p-4 rounded">
-        No hay productos en el carrito.
+<h1 class="text-4xl font-extrabold mb-8 text-orange-700 flex items-center gap-2">
+    🛒 Tu carrito
+</h1>
+
+<?php if(count($carrito) == 0): ?>
+
+    <div class="bg-white p-10 rounded-xl shadow text-center border border-orange-200">
+        <p class="text-gray-600 text-lg">Tu carrito está vacío.</p>
+
+        <a href="<?php echo e(route('home')); ?>"
+           class="mt-6 inline-block bg-orange-600 text-white px-6 py-3 rounded-lg shadow hover:bg-orange-700 transition">
+            Seguir comprando
+        </a>
     </div>
+
 <?php else: ?>
 
-<div class="overflow-x-auto shadow rounded-lg">
-    <table class="w-full text-left border-collapse">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border p-3 font-semibold">Producto</th>
-                <th class="border p-3 font-semibold">Precio</th>
-                <th class="border p-3 font-semibold">Cantidad</th>
-                <th class="border p-3 font-semibold">Subtotal</th>
-                <th class="border p-3 font-semibold">Acciones</th>
-            </tr>
-        </thead>
+<div class="bg-white p-6 rounded-xl shadow border border-orange-200">
 
-        <tbody>
-            <?php $total = 0; ?>
+    <?php $__currentLoopData = $carrito; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="flex flex-col md:flex-row justify-between items-center border-b py-5 gap-4">
 
-            <?php $__currentLoopData = $carrito; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php 
-                    $subtotal = $item['precio'] * $item['cantidad']; 
-                    $total += $subtotal; 
-                ?>
+            <!-- INFO PRODUCTO -->
+            <div class="flex-1">
+                <p class="text-xl font-bold text-gray-800"><?php echo e($item['nombre']); ?></p>
+                <p class="text-gray-500 text-sm"><?php echo e(number_format($item['precio'], 2)); ?> € / unidad</p>
+            </div>
 
-                <tr class="hover:bg-gray-50">
-                    <td class="border p-3"><?php echo e($item['nombre']); ?></td>
-                    <td class="border p-3"><?php echo e(number_format($item['precio'], 2)); ?> €</td>
-                    <td class="border p-3"><?php echo e($item['cantidad']); ?></td>
-                    <td class="border p-3 font-semibold"><?php echo e(number_format($subtotal, 2)); ?> €</td>
-                    <td class="border p-3">
+            <!-- CANTIDAD -->
+            <div class="flex items-center gap-3">
 
-                        <form action="<?php echo e(route('carrito.eliminar')); ?>" method="POST" class="inline-block">
-                            <?php echo csrf_field(); ?>
-                            <input type="hidden" name="id" value="<?php echo e($item['id']); ?>">
-                            <button class="text-red-600 hover:text-red-800 font-semibold">
-                                Eliminar
-                            </button>
-                        </form>
+                <button class="btn-menos bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-lg font-bold transition"
+                        data-id="<?php echo e($item['id']); ?>">−</button>
 
-                    </td>
-                </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <span class="font-bold text-lg w-8 text-center"><?php echo e($item['cantidad']); ?></span>
 
-            <tr class="bg-gray-100 font-bold">
-                <td colspan="3" class="border p-3 text-right">Total</td>
-                <td class="border p-3"><?php echo e(number_format($total, 2)); ?> €</td>
-                <td class="border p-3"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                <button class="btn-mas bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-lg font-bold transition"
+                        data-id="<?php echo e($item['id']); ?>">+</button>
 
-<div class="mt-6 flex items-center gap-4">
+            </div>
 
-    <form action="<?php echo e(route('carrito.vaciar')); ?>" method="POST">
-        <?php echo csrf_field(); ?>
-        <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow">
-            Vaciar carrito
-        </button>
-    </form>
+            <!-- SUBTOTAL -->
+            <div class="text-xl font-bold text-orange-600">
+                <?php echo e(number_format($item['precio'] * $item['cantidad'], 2)); ?> €
+            </div>
 
-    <?php if(auth()->guard()->check()): ?>
-        <form action="<?php echo e(route('checkout')); ?>" method="POST">
-            <?php echo csrf_field(); ?>
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
-                Finalizar compra
+            <!-- ELIMINAR -->
+            <button class="btn-eliminar bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition"
+                    data-id="<?php echo e($item['id']); ?>">
+                Eliminar
             </button>
-        </form>
-    <?php else: ?>
-        <div class="text-red-600 font-semibold">
-            Debes iniciar sesión para finalizar la compra.
+
         </div>
-        <a href="<?php echo e(route('login')); ?>" class="text-blue-600 underline hover:text-blue-800">
-            Iniciar sesión
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    <!-- TOTAL -->
+    <div class="text-right mt-8">
+        <p class="text-3xl font-extrabold text-orange-700">
+            Total: <?php echo e(number_format($total, 2)); ?> €
+        </p>
+    </div>
+
+    <!-- CTA FINAL -->
+    <div class="mt-8 flex flex-col md:flex-row justify-between gap-4">
+
+        <a href="<?php echo e(route('home')); ?>"
+           class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg shadow hover:bg-gray-300 transition text-center">
+            Seguir comprando
         </a>
-    <?php endif; ?>
+
+        <a href="<?php echo e(route('checkout')); ?>"
+           class="bg-orange-600 text-white px-6 py-3 rounded-lg shadow hover:bg-orange-700 transition text-center font-bold">
+            Finalizar compra →
+        </a>
+
+    </div>
 
 </div>
 
 <?php endif; ?>
 
 <?php $__env->stopSection(); ?>
-
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Jannat\Documents\proyecto\RouiasApp\resources\views/cart.blade.php ENDPATH**/ ?>

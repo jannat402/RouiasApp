@@ -39,7 +39,7 @@ class PedidoController extends Controller
 
             // Tarjeta ficticia
             'tarjeta_numero' => 'required|string|min:12|max:19',
-            'tarjeta_fecha' => 'required|date',
+            'tarjeta_fecha' => 'required|date_format:Y-m-d',
             'tarjeta_cvv' => 'required|string|min:3|max:4',
         ]);
 
@@ -69,6 +69,7 @@ class PedidoController extends Controller
         $pedido = Pedido::create([
             'user_id' => Auth::id(),
             'estado' => 'pendiente',
+            'total' => 0,
 
             // Envío
             'envio_nombre' => $request->envio_nombre,
@@ -104,7 +105,7 @@ class PedidoController extends Controller
                 'pedido_id' => $pedido->id,
                 'producto_id' => $producto->id,
                 'cantidad' => $item['cantidad'],
-                'precio_unitario' => $producto->precio,
+                'precio' => $producto->precio,
                 'has_to_comment' => true,
             ]);
 
@@ -118,6 +119,7 @@ class PedidoController extends Controller
 
         // Guardar total
         $pedido->total = $total;
+        $pedido->estado = 'pagado';
         $pedido->save();
 
         // Vaciar carrito

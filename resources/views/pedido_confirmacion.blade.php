@@ -42,9 +42,9 @@
                     <tr class="border-b">
                         <td class="p-3 border">{{ $linea->producto->nombre }}</td>
                         <td class="p-3 border">{{ $linea->cantidad }}</td>
-                        <td class="p-3 border">{{ number_format($linea->precio_unitario, 2) }} €</td>
+                        <td class="p-3 border">{{ number_format($linea->precio, 2) }} €</td>
                         <td class="p-3 border">
-                            {{ number_format($linea->cantidad * $linea->precio_unitario, 2) }} €
+                            {{ number_format($linea->cantidad * $linea->precio, 2) }} €
                         </td>
                     </tr>
                 @endforeach
@@ -56,29 +56,6 @@
                 Total: {{ number_format($pedido->total, 2) }} €
             </p>
         </div>
-    </div>
-
-    {{-- DATOS DE ENVÍO --}}
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-orange-600 mb-3">Datos de envío</h2>
-
-        <p><strong>Nombre:</strong> {{ $pedido->envio_nombre }}</p>
-        <p><strong>Dirección:</strong> {{ $pedido->envio_direccion }}</p>
-        <p><strong>Ciudad:</strong> {{ $pedido->envio_ciudad }}</p>
-        <p><strong>Provincia:</strong> {{ $pedido->envio_provincia }}</p>
-        <p><strong>Código postal:</strong> {{ $pedido->envio_cp }}</p>
-        <p><strong>Teléfono:</strong> {{ $pedido->envio_telefono }}</p>
-    </div>
-
-    {{-- DATOS DE FACTURACIÓN --}}
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-orange-600 mb-3">Datos de facturación</h2>
-
-        <p><strong>Nombre:</strong> {{ $pedido->fact_nombre }}</p>
-        <p><strong>Dirección:</strong> {{ $pedido->fact_direccion }}</p>
-        <p><strong>Ciudad:</strong> {{ $pedido->fact_ciudad }}</p>
-        <p><strong>Provincia:</strong> {{ $pedido->fact_provincia }}</p>
-        <p><strong>Código postal:</strong> {{ $pedido->fact_cp }}</p>
     </div>
 
     {{-- BOTÓN VOLVER --}}
